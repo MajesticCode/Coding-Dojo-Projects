@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="{{url_for('static', filename='css/style.css')}}" type="text/css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/sscript.js')}}"></script>
+  </head>
+  <body>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <p class='error'>{{message}}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <form action="/survey" method="POST">
+      Your Name:<input type="text" name='name'>
+      Dojo Location:<select name='location'>
+        <option value="seattle">Seattle</option>
+        <option value="sanJose">San Jose</option>
+      </select>
+      Favorite Language:<select name='language'>
+        <option value="python">Python</option>
+        <option value="notPython">Not Python</option>
+      </select>
+      Comment:<input type="text" name="comment">
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>

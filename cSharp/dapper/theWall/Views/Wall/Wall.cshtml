@@ -1,0 +1,71 @@
+@model theWall.Models.Post
+@using theWall.Models
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+<div class="row">
+    <div class="col-xs-10 col-md-6 col-md-offset-3">
+        <h1>Welcome to the WALL, @ViewBag.user.fname</h1>
+        <div class="row">
+            <div class="col-xs-12">
+                <form asp-controller="Wall" asp-action="AddPost" method="post" class="well">
+                    <div class="form-group">
+                        <span asp-validation-for="content" class="error"></span><br/>
+                        <label for="content" >New Post: </label>
+                        <textarea class="form-control" asp-for="content" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Add Post" class="btn btn-primary btn-block">
+                    </div>
+                </form>
+            </div>
+            <div class="col-xs-12">
+                @{
+                    foreach(Post post in @ViewBag.posts){
+                        <p class="userStamp">posted by: @post.user.fname @post.createdAt</p>
+                        <p class="postText">@post.content</p>
+                       
+
+                        if(post.user_id == @ViewBag.user.id){
+                           
+
+                            <form asp-controller="Wall" asp-action="DeletePost" method="post">
+                                <div class="form-group">
+                                    <input type="hidden" asp-for="id" value="@post.id">
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Delete" class="btn btn-danger">
+                                </div>
+                            </form>
+                        }
+                        
+                        <div class="col-xs-9 col-xs-offset-3">
+                                @Html.Partial("_CommentForm", new Comment{post_id = post.id})
+                        </div>
+
+                        <div class="col-xs-9 col-xs-offset-3">
+                            @{
+                                foreach(Comment comment in @post.comments){
+                                    <p class="userStamp">posted by: @comment.user.fname @comment.createdAt</p>
+                                    <p>@comment.content</p>
+                                }}
+                        </div>
+            
+                        
+                        
+
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2 col-md-3">
+        <a href="/logout" class="btn btn-primary btn-block">Log Out</a>
+    </div>
+    
+
+</div>
